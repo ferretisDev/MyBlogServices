@@ -3,9 +3,10 @@ import { default as articleService } from "../services/articleService.js"
 const article = {
     create: async (req, res) => {
         try {
-            return await res.status(200).json({
-                Nombre: "Alfredo"
-            });
+            const { body } = req;
+            const article = await articleService.create(body);
+
+            return res.status(200).json(article);
         }
         catch (e) {
             res.status(500).send(e);
@@ -25,20 +26,19 @@ const article = {
     findById: async (req, res) => {
         const { id } = req.params;
         try {
-            return await res.status(200).json({
-                Nombre: "Alfredo"
-            });
+            const article = await articleService.findById(id);
+            return res.status(200).json(article);
         }
         catch (e) {
             res.status(500).send(e);
         }
     },
     update: async (req, res) => {
-        const { id } = req.params;
+        const { params, body } = req;
+        console.log({ params, body });
         try {
-            return await res.status(200).json({
-                Nombre: "Alfredo"
-            });
+            const article = await articleService.update(params.id, body);
+            return res.status(200).json(article);
         }
         catch (e) {
             res.status(500).send(e);
@@ -47,8 +47,11 @@ const article = {
     delete: async (req, res) => {
         const { id } = req.params;
         try {
+            const article = await articleService.delete(id);
             return await res.status(200).json({
-                Nombre: "Alfredo"
+                estatus : "ok",
+                mensaje : "Datos eliminados correctamente",
+                datos: article
             });
         }
         catch (e) {

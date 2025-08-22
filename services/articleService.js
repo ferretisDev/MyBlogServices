@@ -1,21 +1,21 @@
 import Article from "#models/Article.js"
 
 const article = {
-    create: async (data) => {
+    create: (data) => {
         const article = new Article(data);
-        return await article.save();
+        return article.save();
     },
-    find: async () => {
-        return await Article.find();
+    find: () => {
+        return Article.find();
     },
     findById: async (id) => {
         return await Article.findById(id);
     },
     update: async (id, data) => {
-        return await Article.findByIdAndUpdate(id, data, { new: true });
+        return await Article.findByIdAndUpdate(id, data);
     },
     delete: async (id) => {
-        return await User.findByIdAndDelete(id);
+        return await Article.findByIdAndDelete(id);
     }
 };
 
