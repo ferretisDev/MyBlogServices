@@ -5,7 +5,7 @@ const article = {
         const article = new Article(data);
         return await article.save();
     },
-    findAll: async () => {
+    find: async () => {
         return await Article.find();
     },
     findById: async (id) => {

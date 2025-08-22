@@ -3,9 +3,9 @@ import express from 'express';
 
 const router = express.Router();
 
-router.get('/', articleController.getAll);
+router.get('/', articleController.find);
 
-router.get('/:id', articleController.getOne);
+router.get('/:id', articleController.findById);
 
 router.post('/', articleController.create);
 

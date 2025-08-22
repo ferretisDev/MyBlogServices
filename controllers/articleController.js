@@ -11,9 +11,9 @@ const article = {
             res.status(500).send(e);
         }
     },
-    getAll: async (req, res) => {
+    find: async (req, res) => {
         try {
-            const articles = await articleService.findAll();
+            const articles = await articleService.find();
             if (articles.length === 0)
                 return res.status(404).json({ status: 'Ok', message: 'Artículos no encontrados' });
             res.status(200).json(articles);
