@@ -1,0 +1,23 @@
+import { Schema, model } from "mongoose";
+
+const ArticleSchema = Schema({
+    title: {
+        type: String,
+        required: true
+    },
+    content: {
+        type: String,
+        required: true
+    },
+    date: {
+        type: String,
+        default: Date.now()
+    },
+    img: {
+        type: String,
+        required: true,
+        default: "default.png"
+    },
+});
+
+export default model("Article", ArticleSchema);

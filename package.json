@@ -1,0 +1,32 @@
+{
+  "name": "myblogservices",
+  "version": "1.0.0",
+  "description": "Api mongoose",
+  "main": "app.js",
+  "type": "module",
+  "imports": {
+    "#*": "./*",
+    "#config/*": "./config/*",
+    "#controllers/*": "./controllers/*",
+    "#models/*": "./models/*",
+    "#routes/*": "./routes/*",
+    "#services/*": "./services/*"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^4.21.2",
+    "mongoose": "^8.17.2",
+    "multer": "^2.0.2",
+    "validator": "^13.15.15"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
