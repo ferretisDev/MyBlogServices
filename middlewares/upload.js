@@ -1,9 +1,15 @@
-import multer, { diskStorage } from "multer";
 import { extname } from "path";
+import fs from "fs";
+import multer, { diskStorage } from "multer";
 
 const storage = diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "./uploads/articles/");
+    const uploadPath = "./uploads/articles/";
+
+    if (!fs.existsSync(uploadPath))
+      fs.mkdirSync(uploadPath, { recursive: true });
+
+    cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
     const ext = extname(file.originalname);
@@ -16,7 +22,6 @@ const fileFilter = (req, file, cb) => {
   const allowedExt = [".png", ".jpg", ".jpeg"];
 
   const ext = extname(file.originalname).toLowerCase();
-  console.log("Tipo de extensión: " + ext);
   if (allowedExt.includes(ext) && file.mimetype.startsWith("image/")) {
     cb(null, true);
   } else {
