@@ -5,13 +5,7 @@
   "main": "app.js",
   "type": "module",
   "imports": {
-    "#*": "./*",
-    "#config/*": "./config/*",
-    "#controllers/*": "./controllers/*",
-    "#helpers/*": "./helpers/*",
-    "#models/*": "./models/*",
-    "#routes/*": "./routes/*",
-    "#services/*": "./services/*"
+    "#*": "./*"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

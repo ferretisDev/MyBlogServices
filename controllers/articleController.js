@@ -10,7 +10,7 @@ const article = {
 
       if (err) {
         result.success = false;
-        result.error = "Solo se permiten archivos de imagen (.png, .jpg, .jpeg)";
+        result.error = err.message;
         return res.status(400).json(result);
       }
 
