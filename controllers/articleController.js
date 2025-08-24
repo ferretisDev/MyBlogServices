@@ -1,63 +1,89 @@
-import { default as articleService } from "../services/articleService.js"
+import { default as articleService } from "#services/articleService.js";
+import { success } from "#models/Index.js";
 
 const article = {
-    create: async (req, res) => {
-        try {
-            const { body } = req;
-            const article = await articleService.create(body);
+  create: async (req, res) => {
+    let result = {};
+    let { body } = req;
 
-            return res.status(200).json(article);
-        }
-        catch (e) {
-            res.status(500).send(e);
-        }
-    },
-    find: async (req, res) => {
-        try {
-            const articles = await articleService.find();
-            if (articles.length === 0)
-                return res.status(404).json({ status: 'Ok', message: 'Artículos no encontrados' });
-            res.status(200).json(articles);
-        }
-        catch (e) {
-            res.status(500).send(e);
-        }
-    },
-    findById: async (req, res) => {
-        const { id } = req.params;
-        try {
-            const article = await articleService.findById(id);
-            return res.status(200).json(article);
-        }
-        catch (e) {
-            res.status(500).send(e);
-        }
-    },
-    update: async (req, res) => {
-        const { params, body } = req;
-        console.log({ params, body });
-        try {
-            const article = await articleService.update(params.id, body);
-            return res.status(200).json(article);
-        }
-        catch (e) {
-            res.status(500).send(e);
-        }
-    },
-    delete: async (req, res) => {
-        const { id } = req.params;
-        try {
-            const article = await articleService.delete(id);
-            return await res.status(200).json({
-                estatus : "ok",
-                mensaje : "Datos eliminados correctamente",
-                datos: article
-            });
-        }
-        catch (e) {
-            res.status(500).send(e);
-        }
+    try {
+      result.success = success.true;
+      result.data = await articleService.create(body);
+      result.message = "Documento creado con éxito";
+
+      return res.status(200).json(result);
+    } catch (e) {
+      result.success = success.false;
+      result.error = e.message;
+
+      return res.status(500).json(result);
     }
+  },
+  find: async (req, res) => {
+    let result = {};
+
+    try {
+      const documents = await articleService.find();
+
+      result.success = success.true;
+      result.data = documents;
+      result.total = documents.length;
+
+      return res.status(200).json(result);
+    } catch (e) {
+      result.success = success.false;
+      result.error = e.message;
+
+      return res.status(500).json(result);
+    }
+  },
+  findById: async (req, res) => {
+    let result = {};
+    let { id } = req.params;
+
+    try {
+      result.success = success.true;
+      result.data = await articleService.findById(id);
+
+      return res.status(200).json(result);
+    } catch (e) {
+      result.success = success.false;
+      result.message = "No se a encontrado el documento";
+
+      return res.status(500).send(result);
+    }
+  },
+  update: async (req, res) => {
+    let result = {};
+    let { params, body } = req;
+
+    try {
+      result.success = success.true;
+      result.data = await articleService.update(params.id, body);
+      result.message = "Documento actualizado con éxito";
+
+      return res.status(200).json(result);
+    } catch (e) {
+      res.status(500).send(e);
+    }
+  },
+  delete: async (req, res) => {
+    let result = {};
+    let { id } = req.params;
+
+    try {
+      result.success = success.true;
+      result.data = await articleService.delete(id);
+      result.message = "Documento eliminado con éxito";
+
+      return res.status(200).json(result);
+    } catch (e) {
+      result.success = success.false;
+      result.error = e.message;
+
+      return res.status(500).send(result);
+    }
+  },
 };
 
 export default article;
