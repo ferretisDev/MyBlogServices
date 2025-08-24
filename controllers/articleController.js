@@ -1,23 +1,32 @@
 import { default as articleService } from "#services/articleService.js";
 import { success } from "#models/Index.js";
+import upload from "#middlewares/upload.js";
 
 const article = {
   create: async (req, res) => {
-    let result = {};
-    let { body } = req;
+    upload.single("file")(req, res, async (err) => {
+      let result = {};
+      let body = req.body;
 
-    try {
-      result.success = success.true;
-      result.data = await articleService.create(body);
-      result.message = "Documento creado con éxito";
+      if (err) {
+        result.success = false;
+        result.error = "Solo se permiten archivos de imagen (.png, .jpg, .jpeg)";
+        return res.status(400).json(result);
+      }
 
-      return res.status(200).json(result);
-    } catch (e) {
-      result.success = success.false;
-      result.error = e.message;
+      body.img = req.file?.filename;
 
-      return res.status(500).json(result);
-    }
+      try {
+        result.success = success.true;
+        result.data = await articleService.create(body);
+        result.message = "Documento creado con éxito";
+        return res.status(200).json(result);
+      } catch (e) {
+        result.success = success.false;
+        result.error = e.message;
+        return res.status(500).json(result);
+      }
+    });
   },
   find: async (req, res) => {
     let result = {};
