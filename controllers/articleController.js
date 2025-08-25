@@ -1,5 +1,7 @@
 import { default as articleService } from "#services/articleService.js";
-import { success } from "#models/Index.js";
+import { jsonResponse } from "#helpers/jsonResponse.js";
+import { success } from "#enums/index.js";
+
 import upload from "#middlewares/upload.js";
 
 const article = {
@@ -9,7 +11,7 @@ const article = {
       let body = req.body;
 
       if (err) {
-        result.success = false;
+        result.success = Success.False;
         result.error = err.message;
         return res.status(400).json(result);
       }
@@ -29,42 +31,20 @@ const article = {
     });
   },
   find: async (req, res) => {
-    let result = {};
-
-    try {
-      const documents = await articleService.find();
-
-      result.success = success.true;
-      result.data = documents;
-      result.total = documents.length;
-
-      return res.status(200).json(result);
-    } catch (e) {
-      result.success = success.false;
-      result.error = e.message;
-
-      return res.status(500).json(result);
-    }
+    const params = req.query;
+    return jsonResponse(res, async () => {
+      return await articleService.find(params);
+    });
   },
   findById: async (req, res) => {
-    let result = {};
-    let { id } = req.params;
-
-    try {
-      result.success = success.true;
-      result.data = await articleService.findById(id);
-
-      return res.status(200).json(result);
-    } catch (e) {
-      result.success = success.false;
-      result.message = "No se a encontrado el documento";
-
-      return res.status(500).send(result);
-    }
+    const { id } = req.params;
+    return jsonResponse(res, async () => {
+      return await articleService.findById(id);
+    });
   },
   update: async (req, res) => {
-    let result = {};
-    let { params, body } = req;
+    const result = {};
+    const { params, body } = req;
 
     try {
       result.success = success.true;

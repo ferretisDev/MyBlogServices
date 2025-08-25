@@ -1,3 +1,6 @@
+import { default as articleRepository } from "#repositories/articleRepository.js"
+import { isValidObjectId } from "mongoose";
+
 import Article from "#models/Article.js";
 
 const article = {
@@ -5,20 +8,26 @@ const article = {
     const article = new Article(data);
     return article.save();
   },
-  find: () => {
-    const article = Article.find();
-
-    article.sort({ date: -1 });
-
-    return article;
+  find: (params) => {
+    const articles = articleRepository.find(params);
+    return articles;
   },
   findById: async (id) => {
-    return await Article.findById(id);
+    if (!isValidObjectId(id))
+      throw new Error("El id viene vacío ó no es válido");
+    const article = await articleRepository.findById(id);
+    if (!article)
+      throw new Error("Artículo no encontrado");
+    return article;
   },
   update: async (id, data) => {
-    return await Article.findByIdAndUpdate(id, data, { new: true });
+    if (!isValidObjectId(id))
+      throw new Error("El id viene vacío ó no es válido");
+    return await articleRepository.update(id, data);
   },
   delete: async (id) => {
+    if (!isValidObjectId(id))
+      throw new Error("El id viene vacío ó no es válido");
     return await Article.findByIdAndDelete(id);
   },
 };
